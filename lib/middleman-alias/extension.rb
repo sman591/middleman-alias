@@ -16,7 +16,8 @@ module Middleman
             existing_resource = resources.select{|r| r.destination_path == alias_url }.first
             next if existing_resource
 
-            resources.push Middleman::Sitemap::AliasResource.new(@app.sitemap, alias_url, resource.url)
+            # This isn't perfect. It'll fail if redirecting from nested subdirectories to something in a parent directory
+            resources.push Middleman::Sitemap::AliasResource.new(@app.sitemap, alias_url, resource.path.sub(/^#{mm_alias}/, ''))
             #Sitemap::Resource.new(@app.sitemap, alias_url).tap do |p|
               #p.proxy_to("alias.html")
               #p.add_metadata locals: {
